@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <fcntl.h>
+#include <unistd.h>
+
 #define MAX 3
 #define SIZE 5
 #define MINAS 5
@@ -116,7 +119,17 @@ int main(){
  //escribir a disco
  //open
  //write
+ struct Info Datos[3]={{"Juan",12}, {"Montserrat",7},{"Pedro",4}};
+    
+    Leer( Datos);
+    //Almacenar ( Datos );
+    printf("Info -- %s %i \n", Datos[0].nombre, Datos[0].nivel);
+    printf("Info -- %s %i \n", Datos[1].nombre, Datos[1].nivel);
+    printf("Info -- %s %i \n", Datos[2].nombre, Datos[2].nivel);
+    system("ls -l");
     return 0;
+
+
 }
 
 
@@ -140,6 +153,30 @@ Info pop(Info * pila, Info**tope )
         x = **tope; 
         *tope--;
         return x; 
+    }
+}
+
+void Leer(struct Info Datos[3]){
+    int archivo; 
+    archivo = open("ganadores.jp", O_RDONLY); 
+    if(archivo == -1 ){
+        printf("No se completo"); 
+    }
+    else{
+        read(archivo, Dato, sizeof(struct Info)*3); 
+        close(archivo); 
+    }
+}
+void Almacenar(struct Info Datos[3]){
+    int archivo; 
+    archivo = open("ganadores.jp", W_WRONLY | O_CREAT); 
+    if(archivo == -1 ){
+        printf("No se completo"); 
+
+    }
+    else{
+        write(archivo, Dato, sizeof(struct Info)*3); 
+        close(archivo); 
     }
 }
 }
